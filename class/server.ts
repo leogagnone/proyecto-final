@@ -1,13 +1,13 @@
 import express from 'express';
+import variables_entorno from '../config'
+class Server {
 
-class Server{
-    public app:express.Application; 
-    public host:string = "localhost";
-    public puerto: number = 3000;
+    public app:express.Application;
+    public host:string = variables_entorno.HOST;  
+    public puerto:any = variables_entorno.PORT;
 
     constructor(){
         this.app = express();
-
     }
 
     start(callback:any){

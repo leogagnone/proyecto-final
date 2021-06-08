@@ -1,29 +1,42 @@
 import Server from './class/server';
-import mysql from 'mysql';
+import connection from './bin/connectmysql';
+import mongoose from 'mongoose';
+import bodyPaser from 'body-parser';
+import userSQLRoutes from './routes/userSQL';
 
-//Server web
+
+
+
+
+//Creando servidor web
 const server = new Server();
 
 server.start(()=>{
-    console.log(`Server running on port ${server.puerto} on host ${server.host}`);
+    console.log(`Servidor corriendo en puerto ${server.puerto} y en host ${server.host}`);
 });
 
-//Database connect
-const connection = mysql.createConnection({
-    host:"localhost",
-    user:"root",
-    password:"",
-    database:"gestion_inmobiliaria",
-    port:3306
 
-})
 
+// body parser
+server.app.use(bodyPaser.urlencoded({extended:true}));
+server.app.use(bodyPaser.json());
+
+
+
+//Rutas aplicacion
+
+server.app.use('/userSQL', userSQLRoutes);
+
+
+
+
+//Conexión dataBase MySQL
 connection.connect((error)=>{
-    if (error){
+    if(error){
         throw error
     }
     else{
-       console.log(`App connect to MySQL data base`) 
+        console.log("Aplicacion conectada a base de datos MySql")
     }
+})
 
-});
